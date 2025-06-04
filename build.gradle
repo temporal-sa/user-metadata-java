@@ -1,0 +1,42 @@
+plugins {
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    javaSDKVersion = '1.29.0'
+}
+
+dependencies {
+    implementation "io.temporal:temporal-sdk:$javaSDKVersion"
+    implementation 'ch.qos.logback:logback-classic:1.5.3'
+    implementation 'org.json:json:20210307'
+    implementation 'commons-io:commons-io:2.11.0'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.19.0-rc2'
+    // lombok
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+
+application {
+    mainClass = 'com.example.swingui.SwingUI'
+}
+
+task runWorker(type: JavaExec) {
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+    mainClass = 'com.example.worker.Main'
+    classpath = sourceSets.main.runtimeClasspath
+}
